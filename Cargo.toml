@@ -1,0 +1,11 @@
+[package]
+name = "problem"
+version = "0.1.0"
+authors = ["Birk Tjelmeland <birktjelmeland@yahoo.no>"]
+edition = "2018"
+
+[dependencies]
+rayon = "1.0"
+rand = "0.6"
+chashmap = "2.2"
+#faster = "0.5"
