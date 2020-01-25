@@ -1,5 +1,6 @@
 mod problem;
 
+/// The main function takes 2 arguments from the command line: input & output file names.
 fn main() {
     let args = std::env::args().collect::<Vec<_>>();
     let input = std::fs::read_to_string(&args[1]).unwrap();
@@ -23,7 +24,7 @@ fn main() {
             std::fs::write(&args[2], ans).unwrap();
             best_points = points;
         }
-        
+
         strength += 0.1;
     }
     eprintln!("\rFound solution with {} points", best_points);*/

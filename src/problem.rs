@@ -82,7 +82,7 @@ impl Output {
 
         (self.score, res)
     }
-    
+
     fn compute_score(&mut self, input: &Input) -> u64 {
         let mut score = 0;
         for i in 0..self.photos.len()-1 {
@@ -137,7 +137,7 @@ fn select_next(tags: &Tags, state: &State) -> (u64, Vec<usize>) {
 
     let mut best = Vec::new();
     let mut best_score = 0; //transition_score(&tags, state.h_photos.get(&h_buf[0]).unwrap());
-    
+
     match (0..h_count).into_par_iter().map(|i| {
         let score = transition_score(&tags, state.h_photos.get(&h_buf[i]).unwrap());
         (score, vec![h_buf[i]])
@@ -209,7 +209,7 @@ fn select_next2(tags: &Tags, state: &State) -> (u64, Vec<usize>) {
 
     let mut best = Vec::new();
     let mut best_score = 0; //transition_score(&tags, state.h_photos.get(&h_buf[0]).unwrap());
-    
+
     match h_pot.into_par_iter().map(|i| {
         let score = transition_score(&tags, state.h_photos.get(&i).unwrap());
         (score, vec![*i])
@@ -246,7 +246,7 @@ fn greedy_01(input: Input) -> Output {
     let used = vec![false; input.horisontal_photos.len() + input.vertical_photos.len()];
     let available_h = input.h_ids.iter().map(|x| *x).collect::<HashSet<_>>();
     let available_v = input.v_ids.iter().map(|x| *x).collect::<HashSet<_>>();
-    
+
     let h_photos = input.h_ids.iter().map(|x| *x).zip(
         input.horisontal_photos.iter().map(|x| x.clone()))
         .collect::<HashMap<_, _>>();
@@ -288,8 +288,10 @@ fn greedy_01(input: Input) -> Output {
     let mut score = 0;
 
     while state.available_h.len() > 0 || state.available_v.len() > 1 {
+        /// select_next here means optimizing for few tags per photo
+        /// select_next2 here means optimizing for few tags per photo
         let (sc, next) = select_next2(&curr, &state);
-    
+
         if next.len() == 0 {
             eprintln!("INTERNAL ERROR");
             break;
@@ -365,10 +367,10 @@ fn many_random_01(input: &Input) -> Output {
     best.into_inner().unwrap()
 }
 
-
+/// This is the callable public function for generating a solution file from an input file
 pub fn solution(input: &str, strength: f64) -> (u64, String) {
     let input = Input::parse(input);
-    
+
     //eprintln!("Input: {:?}", input);
 
     greedy_01(input).print()
